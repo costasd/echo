@@ -2,16 +2,29 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strings"
-	"log"
 )
 
 func main() {
 	listen := "127.0.0.1:3000"
+	listenTLS := "127.0.0.1:3001"
+
+	var cert string
+	var key string
+	flag.StringVar(&cert, "cert", "", "TLS certificate")
+	flag.StringVar(&key, "key", "", "TLS certificate")
+
+	flag.Parse()
 
 	go startHandler(listen)
+
+	if cert != "" && key != "" {
+		go startHandlerTLS(listenTLS, cert, key)
+	}
 
 	select {}
 }
@@ -20,7 +33,16 @@ func startHandler(listen string) {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/echo", echoServer)
+
 	http.ListenAndServe(listen, mux)
+}
+
+func startHandlerTLS(listen string, cert string, key string) {
+
+	muxTLS := http.NewServeMux()
+	muxTLS.HandleFunc("/api/echo", echoServer)
+
+	http.ListenAndServeTLS(listen, cert, key, muxTLS)
 }
 
 func echoServer(w http.ResponseWriter, r *http.Request) {
