@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	listen := "127.0.0.1:3000"
-	listenTLS := "127.0.0.1:3001"
+	listen := ":3000"
+	listenTLS := ":3001"
 
 	var cert string
 	var key string
