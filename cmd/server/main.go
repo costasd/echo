@@ -53,6 +53,12 @@ func echoServer (w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	c, _ := json.Marshal(received)
-	w.Write(c)
+	echoed, found := received["echoed"]
+	if found && echoed == "true" {
+		http.Error(w, "echoed cannot be set", http.StatusBadRequest)
+	} else {
+		received["echoed"] = "true"
+		c, _ := json.Marshal(received)
+		w.Write(c)
+	}
 }
