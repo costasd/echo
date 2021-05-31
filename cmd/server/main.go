@@ -1,14 +1,14 @@
 package main
 
 import (
-	"net/http"
-	"io/ioutil"
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
 	"strings"
 	//"fmt"
 )
 
-func main () {
+func main() {
 	listen := "127.0.0.1:3000"
 
 	go startHandler(listen)
@@ -23,15 +23,14 @@ func startHandler(listen string) {
 	http.ListenAndServe(listen, mux)
 }
 
-
-func echoServer (w http.ResponseWriter, r *http.Request) {
+func echoServer(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
-		case http.MethodPost:
-		case http.MethodPut:
-		default:
-			http.Error(w, "only POST/PUT are allowed", http.StatusMethodNotAllowed)
-			return
+	case http.MethodPost:
+	case http.MethodPut:
+	default:
+		http.Error(w, "only POST/PUT are allowed", http.StatusMethodNotAllowed)
+		return
 	}
 
 	if strings.ToLower(r.Header.Get("Content-Type")) != "application/json" {

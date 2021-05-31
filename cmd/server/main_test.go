@@ -1,65 +1,64 @@
-
 package main
 
 import (
-	"io/ioutil"
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"testing"
 	"strings"
+	"testing"
 )
 
 func TestEchoServer(t *testing.T) {
 
-	 tests :=  []struct {
-		name string
-		data string
-		method string
-		ctype string
+	tests := []struct {
+		name           string
+		data           string
+		method         string
+		ctype          string
 		statusExpected int
 	}{
 
 		{
-			name: "Test Post Valid Json",
-			data: `{"username": "xyz", "upload":"xyz"}`,
-			method: "POST",
-			ctype: "application/json",
+			name:           "Test Post Valid Json",
+			data:           `{"username": "xyz", "upload":"xyz"}`,
+			method:         "POST",
+			ctype:          "application/json",
 			statusExpected: http.StatusOK,
 		},
 		{
-			name: "Test Put Valid Json",
-			data: `{"username": "xyz", "upload":"xyz"}`,
-			method: "PUT",
-			ctype: "application/json",
+			name:           "Test Put Valid Json",
+			data:           `{"username": "xyz", "upload":"xyz"}`,
+			method:         "PUT",
+			ctype:          "application/json",
 			statusExpected: http.StatusOK,
 		},
 		{
-			name: "Test Get Json",
-			data: "{}",
-			method: "GET",
-			ctype: "application/json",
+			name:           "Test Get Json",
+			data:           "{}",
+			method:         "GET",
+			ctype:          "application/json",
 			statusExpected: http.StatusMethodNotAllowed,
 		},
 		{
-			name: "Test Post Valid Json but with echoed false",
-			data: `{"username": "xyz", "upload":"xyz", "echoed":"false"}`,
-			method: "POST",
-			ctype: "application/json",
+			name:           "Test Post Valid Json but with echoed false",
+			data:           `{"username": "xyz", "upload":"xyz", "echoed":"false"}`,
+			method:         "POST",
+			ctype:          "application/json",
 			statusExpected: http.StatusOK,
 		},
 		{
-			name: "Test Post Valid Json but with echoed true",
-			data: `{"username": "xyz", "upload":"xyz", "echoed":"true"}`,
-			method: "POST",
-			ctype: "application/json",
+			name:           "Test Post Valid Json but with echoed true",
+			data:           `{"username": "xyz", "upload":"xyz", "echoed":"true"}`,
+			method:         "POST",
+			ctype:          "application/json",
 			statusExpected: http.StatusBadRequest,
 		},
 		{
-			name: "Test Post Valid Json but with erroneous content-type",
-			data: `{"username": "xyz", "upload":"xyz"}`,
-			method: "POST",
-			ctype: "application/xml",
+			name:           "Test Post Valid Json but with erroneous content-type",
+			data:           `{"username": "xyz", "upload":"xyz"}`,
+			method:         "POST",
+			ctype:          "application/xml",
 			statusExpected: http.StatusBadRequest,
 		},
 	}
@@ -72,7 +71,6 @@ func TestEchoServer(t *testing.T) {
 			echoServer(w, req)
 
 			resp := w.Result()
-
 
 			if resp.StatusCode != test.statusExpected {
 				t.Fatalf("Status Code: Expected %v but got %v", test.statusExpected, resp.StatusCode)
