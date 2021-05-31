@@ -78,7 +78,11 @@ func TestEchoServer(t *testing.T) {
 				t.Fatalf("Status Code: Expected %v but got %v", test.statusExpected, resp.StatusCode)
 			}
 
-			if test.statusExpected == http.StatusOK { // check content if we get a 200
+			if test.statusExpected == http.StatusOK { // check headers+content if we get a 200
+				if strings.ToLower(resp.Header.Get("Content-Type")) != "application/json" {
+					t.Fatalf("Content-Type: Expected %v but got %v", "application/json", resp.Header.Get("Content-Type"))
+				}
+
 				body, _ := ioutil.ReadAll(resp.Body)
 				var received map[string]interface{}
 				json.Unmarshal([]byte(body), &received)
