@@ -25,6 +25,14 @@ func startHandler(listen string) {
 
 func echoServer (w http.ResponseWriter, r *http.Request) {
 
+	switch r.Method {
+		case http.MethodPost:
+		case http.MethodPut:
+		default:
+			http.Error(w, "only POST/PUT are allowed", http.StatusMethodNotAllowed)
+			return
+	}
+
 	content, err := ioutil.ReadAll(r.Body)
 
 	//fmt.Printf(string(content))

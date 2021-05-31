@@ -33,7 +33,7 @@ func TestEchoServer(t *testing.T) {
 			name: "Test Get Json",
 			data: "{}",
 			method: "GET",
-			statusExpected: http.StatusOK,
+			statusExpected: http.StatusMethodNotAllowed,
 		},
 	}
 	for _, test := range tests {
