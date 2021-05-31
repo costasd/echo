@@ -35,6 +35,18 @@ func TestEchoServer(t *testing.T) {
 			method: "GET",
 			statusExpected: http.StatusMethodNotAllowed,
 		},
+		{
+			name: "Test Post Valid Json but with echoed false",
+			data: `{"username": "xyz", "upload":"xyz", "echoed":"false"}`,
+			method: "POST",
+			statusExpected: http.StatusOK,
+		},
+		{
+			name: "Test Post Valid Json but with echoed true",
+			data: `{"username": "xyz", "upload":"xyz", "echoed":"true"}`,
+			method: "POST",
+			statusExpected: http.StatusBadRequest,
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
