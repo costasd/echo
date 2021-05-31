@@ -1,7 +1,7 @@
 binary = server
 current_dir = $(notdir $(shell pwd))
 
-.PHONY: clean build release
+.PHONY: clean build fmt
 
 all: test build
 
@@ -11,6 +11,9 @@ test:
 	go test -v ./cmd/server
 
 server: test build
+
+fmt:
+	go fmt ./cmd/server
 
 run: server
 	./$(binary)
