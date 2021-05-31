@@ -71,7 +71,7 @@ func echoServer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var received map[string]string // cast all as strings
+	var received map[string]interface{}
 	errj := json.Unmarshal([]byte(content), &received)
 	if errj != nil {
 		http.Error(w, "invalid json", http.StatusBadRequest)
