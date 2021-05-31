@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
+	"strings"
 	//"fmt"
 )
 
@@ -32,6 +33,20 @@ func echoServer (w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "only POST/PUT are allowed", http.StatusMethodNotAllowed)
 			return
 	}
+	//	Header = map[string][]string{
+
+	//		"Accept-Encoding": {"gzip, deflate"},
+
+	//		"Accept-Language": {"en-us"},
+
+	//		"Foo": {"Bar", "two"},
+
+	//	}
+
+	if strings.ToLower(r.Header.Get("Content-Type")) != "application/json" {
+		http.Error(w, "Content-Type must be set to application/json", http.StatusBadRequest)
+		return
+	}
 
 	content, err := ioutil.ReadAll(r.Body)
 
@@ -59,6 +74,7 @@ func echoServer (w http.ResponseWriter, r *http.Request) {
 	} else {
 		received["echoed"] = "true"
 		c, _ := json.Marshal(received)
+		w.Header().Add("Content-Type", "application/json")
 		w.Write(c)
 	}
 }
