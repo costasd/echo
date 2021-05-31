@@ -1,7 +1,7 @@
 binary = server
 current_dir = $(notdir $(shell pwd))
 
-.PHONY: clean build fmt gen-certs
+.PHONY: clean build fmt gen-certs docker-build
 
 all: test build
 
@@ -24,4 +24,4 @@ run: server
 	./$(binary)
 
 docker-build:
-	docker-build --tag echo:latest build/
+	docker build --tag echo:latest --no-cache=true build/
